@@ -12,7 +12,7 @@
 * Implementation: manual
 * Task: binary classification
 
-`02_perceptron.py`
+`02_perceptron_sl.py`
 
 * Model: perceptron
 * Implementation: scikit-learn
@@ -193,6 +193,18 @@
 * Model: Latent dirichlet allocation
 * Implementation: scikit-learn
 * Task: multi-class classification
+
+`33_linear_regression_gd.py`
+
+* Model: linear regression (gradient descent)
+* Implementation: manual
+* Task: univariate regression
+
+`34_linear_regression_sl.py`
+
+* Model: linear regression
+* Implementation: scikit-learn
+* Task: univariate regression
 
 
 **Sources**
