@@ -6,9 +6,10 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from mlxtend.plotting import scatterplotmatrix, heatmap
 
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # Image path
 
@@ -42,6 +43,10 @@ y = data['SalePrice'].values
 
 X = data[['Gr Liv Area']].values
 
+# Separate the data into train and test subsets
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=123)
+
 
 # %% MODEL
 
@@ -54,7 +59,7 @@ lr = LinearRegression()
 
 # Learn from the data via the fit method
 
-lr.fit(X, y)
+lr.fit(X_train, y_train)
 
 print(f'Slope: {lr.coef_[0]:.3f}')
 print(f'Intercept: {lr.intercept_:.3f}')
@@ -62,12 +67,33 @@ print(f'Intercept: {lr.intercept_:.3f}')
 # Plot the best fit line
 
 plt.figure()
-plt.scatter(X, y, color='blue', marker='o', edgecolor='black')
-plt.plot(X, lr.predict(X), color='black', lw=2)
+plt.scatter(X_train, y_train, color='blue', marker='o', edgecolor='black')
+plt.plot(X_train, lr.predict(X_train), color='black', lw=2)
 plt.title('Scatter plot of the dependent and independent variable')
 plt.xlabel('Gr Liv Area')
 plt.ylabel('SalePrice')
 plt.savefig(os.path.join(save_dir, 'Best_fit_line.png'))
+
+
+# %% TESTING
+
+# Predict the values of the samples in the train and test sets
+
+y_train_pred = lr.predict(X_train)
+y_test_pred = lr.predict(X_test)
+
+# Evaluate the performance of the model
+
+mse_train = mean_squared_error(y_train, y_train_pred)
+mae_train = mean_absolute_error(y_train, y_train_pred)
+r2_train = r2_score(y_train, y_train_pred)
+
+mse_test = mean_squared_error(y_test, y_test_pred)
+mae_test = mean_absolute_error(y_test, y_test_pred)
+r2_test = r2_score(y_test, y_test_pred)
+
+print(f'Train:\n MSE={mse_train:.3f}\n MAE={mae_train:.3f}\n R2={r2_train:.3f}')
+print(f'Test:\n MSE={mse_test:.3f}\n MAE={mae_test:.3f}\n R2={r2_test:.3f}')
 
 
 # %% GENERAL

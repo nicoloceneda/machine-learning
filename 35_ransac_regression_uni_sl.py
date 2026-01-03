@@ -6,10 +6,11 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from mlxtend.plotting import scatterplotmatrix, heatmap
 
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import RANSACRegressor
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # Image path
 
@@ -43,6 +44,10 @@ y = data['SalePrice'].values
 
 X = data[['Gr Liv Area']].values
 
+# Separate the data into train and test subsets
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=123)
+
 
 # %% MODEL
 
@@ -55,7 +60,7 @@ rr = RANSACRegressor(LinearRegression(), max_trials=100, min_samples=0.95, resid
 
 # Learn from the data via the fit method
 
-rr.fit(X, y)
+rr.fit(X_train, y_train)
 
 print(f'Slope: {rr.estimator_.coef_[0]:.3f}')
 print(f'Intercept: {rr.estimator_.intercept_:.3f}')
@@ -65,18 +70,36 @@ print(f'Intercept: {rr.estimator_.intercept_:.3f}')
 inlier_mask = rr.inlier_mask_
 outlier_mask = np.logical_not(inlier_mask)
 
-line_X = np.linspace(X.min(), X.max(), 100)[:, np.newaxis]
-line_y = rr.predict(line_X)
-
 plt.figure()
-plt.scatter(X[inlier_mask], y[inlier_mask], color='blue', marker='o', edgecolor='black', label='Inliers', zorder=2)
-plt.scatter(X[outlier_mask], y[outlier_mask], color='red', marker='o', edgecolor='black', label='Outliers', zorder=1)
-plt.plot(line_X, line_y, color='black', zorder=3)
+plt.scatter(X_train[inlier_mask], y_train[inlier_mask], color='blue', marker='o', edgecolor='black', label='Inliers', zorder=2)
+plt.scatter(X_train[outlier_mask], y_train[outlier_mask], color='red', marker='o', edgecolor='black', label='Outliers', zorder=1)
+plt.plot(X_train, rr.predict(X_train), color='black', zorder=3)
 plt.title('Scatter plot of the dependent and independent variable')
 plt.xlabel('Gr Liv Area')
 plt.ylabel('SalePrice')
 plt.legend(loc='upper left')
 plt.savefig(os.path.join(save_dir, 'Best_fit_line.png'))
+
+
+# %% TESTING
+
+# Predict the values of the samples in the train and test sets
+
+y_train_pred = rr.predict(X_train)
+y_test_pred = rr.predict(X_test)
+
+# Evaluate the performance of the model
+
+mse_train = mean_squared_error(y_train, y_train_pred)
+mae_train = mean_absolute_error(y_train, y_train_pred)
+r2_train = r2_score(y_train, y_train_pred)
+
+mse_test = mean_squared_error(y_test, y_test_pred)
+mae_test = mean_absolute_error(y_test, y_test_pred)
+r2_test = r2_score(y_test, y_test_pred)
+
+print(f'Train:\n MSE={mse_train:.3f}\n MAE={mae_train:.3f}\n R2={r2_train:.3f}')
+print(f'Test:\n MSE={mse_test:.3f}\n MAE={mae_test:.3f}\n R2={r2_test:.3f}')
 
 
 # %% GENERAL
