@@ -206,6 +206,12 @@
 * Implementation: scikit-learn
 * Task: univariate regression
 
+`35_ransac_regression_sl.py`
+
+* Model: ransac regression
+* Implementation: scikit-learn
+* Task: univariate regression
+
 
 **Sources**
 
