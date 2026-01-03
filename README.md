@@ -4,7 +4,7 @@
 *Contact*: n.ceneda20@imperial.ac.uk \
 *Website*: [nicoloceneda.github.io](https://nicoloceneda.github.io/) \
 *Institution*: Imperial College London \
-*Course*: PhD in Finance \
+*Course*: PhD in Finance
 
 `01_perceptron.py`
 
