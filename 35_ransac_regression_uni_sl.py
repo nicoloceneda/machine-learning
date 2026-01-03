@@ -53,7 +53,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 # Initialize a linear regression object
 
-rr = RANSACRegressor(LinearRegression(), max_trials=100, min_samples=0.95, residual_threshold=None, random_state=123)
+rr = RANSACRegressor(LinearRegression(fit_intercept=True), max_trials=100, min_samples=0.95, residual_threshold=None, random_state=123)
 
 
 # %% TRAINING
