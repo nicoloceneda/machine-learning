@@ -194,24 +194,29 @@
 * Implementation: scikit-learn
 * Task: multi-class classification
 
-`33_linear_regression_gd.py`
+`33_linear_regression_uni_gd.py`
 
 * Model: linear regression (gradient descent)
 * Implementation: manual
 * Task: univariate regression
 
-`34_linear_regression_sl.py`
+`34_linear_regression_uni_sl.py`
 
 * Model: linear regression
 * Implementation: scikit-learn
 * Task: univariate regression
 
-`35_ransac_regression_sl.py`
+`35_ransac_regression_uni_sl.py`
 
 * Model: ransac regression
 * Implementation: scikit-learn
 * Task: univariate regression
 
+`36_linear_regression_mul_sl.py`
+
+* Model: linear regression
+* Implementation: scikit-learn
+* Task: multivariate regression
 
 **Sources**
 
