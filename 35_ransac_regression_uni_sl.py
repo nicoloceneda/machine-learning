@@ -67,13 +67,16 @@ print(f'Intercept: {rr.estimator_.intercept_:.3f}')
 
 # Plot the best fit line
 
+X_fit = np.linspace(X_train.min()-1, X_train.max()+1, 1000)[:, np.newaxis]
+y_fit_pred = rr.predict(X_fit)
+
 inlier_mask = rr.inlier_mask_
 outlier_mask = np.logical_not(inlier_mask)
 
 plt.figure()
-plt.scatter(X_train[inlier_mask], y_train[inlier_mask], color='blue', marker='o', edgecolor='black', label='Inliers', zorder=2)
-plt.scatter(X_train[outlier_mask], y_train[outlier_mask], color='red', marker='o', edgecolor='black', label='Outliers', zorder=1)
-plt.plot(X_train, rr.predict(X_train), color='black', zorder=3)
+plt.scatter(X_train[inlier_mask], y_train[inlier_mask], color='blue', marker='o', edgecolor='black', label='Inliers')
+plt.scatter(X_train[outlier_mask], y_train[outlier_mask], color='red', marker='o', edgecolor='black', label='Outliers')
+plt.plot(X_fit, y_fit_pred, color='black', lw=2)
 plt.title('Scatter plot of the dependent and independent variable')
 plt.xlabel('Gr Liv Area')
 plt.ylabel('SalePrice')

@@ -66,9 +66,12 @@ print(f'Intercept: {lr.intercept_:.3f}')
 
 # Plot the best fit line
 
+X_fit = np.linspace(X_train.min()-1, X_train.max()+1, 1000)[:, np.newaxis]
+y_fit_pred = lr.predict(X_fit)
+
 plt.figure()
 plt.scatter(X_train, y_train, color='blue', marker='o', edgecolor='black')
-plt.plot(X_train, lr.predict(X_train), color='black', lw=2)
+plt.plot(X_fit, y_fit_pred, color='black', lw=2)
 plt.title('Scatter plot of the dependent and independent variable')
 plt.xlabel('Gr Liv Area')
 plt.ylabel('SalePrice')
