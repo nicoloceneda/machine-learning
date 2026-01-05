@@ -218,6 +218,12 @@
 * Implementation: scikit-learn
 * Task: multivariate regression
 
+`37_poly_regression_uni_sl.py`
+
+* Model: polynomial regression
+* Implementation: scikit-learn
+* Task: univariate regression
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn); Sebastian Raschka
