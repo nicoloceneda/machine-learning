@@ -56,8 +56,6 @@ cubic = PolynomialFeatures(degree=3, include_bias=False)
 X_quad = quadratic.fit_transform(X)
 X_cubic = cubic.fit_transform(X)
 
-# %%
-
 # Separate the data into train and test subsets
 
 X_train, X_test, X_quad_train, X_quad_test, X_cubic_train, X_cubic_test, y_train, y_test = train_test_split(X, X_quad, X_cubic, y, test_size=0.3, random_state=123)
