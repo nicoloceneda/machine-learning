@@ -224,6 +224,18 @@
 * Implementation: scikit-learn
 * Task: univariate regression
 
+`38_decision_tree_regression_sl.py`
+
+* Model: decision tree regression
+* Implementation: scikit-learn
+* Task: univariate regression
+
+`39_random_forest_regression_sl.py`
+
+* Model: random forest regression
+* Implementation: scikit-learn
+* Task: univariate regression
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn); Sebastian Raschka
