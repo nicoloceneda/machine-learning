@@ -49,7 +49,7 @@ X_test_std = std_scaler.transform(X_test)
 
 # %% MODEL
 
-# Initialize a k-nearest neighbors
+# Initialize a k-nearest neighbors object
 
 knn = KNeighborsClassifier(n_neighbors=5, metric='minkowski', p=2)
 

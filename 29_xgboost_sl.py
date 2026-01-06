@@ -53,7 +53,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # %% MODEL
 
-# Initialize an XGBoost object with a decision tree as base estimator
+# Initialize an XGBoost object
 
 xgb = xgb.XGBClassifier(n_estimators=1000, learning_rate=0.01, max_depth=4, random_state=1)
 

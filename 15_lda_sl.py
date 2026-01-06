@@ -49,7 +49,7 @@ X_test_std = std_scaler.transform(X_test)
 
 # %% MODEL
 
-# Initialize a PCA object
+# Initialize an LDA object
 
 lda = LDA(n_components=2)
 

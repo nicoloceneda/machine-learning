@@ -49,7 +49,7 @@ X_test_std = std_scaler.transform(X_test)
 
 # %% MODEL
 
-# Initialize a decision tree object
+# Initialize a random forest object
 
 forest = RandomForestClassifier(n_estimators=25, random_state=1, n_jobs=-1)
 
