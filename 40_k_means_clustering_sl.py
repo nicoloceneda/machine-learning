@@ -92,7 +92,7 @@ plt.grid(zorder=1)
 plt.tight_layout()
 plt.savefig(os.path.join(save_dir, 'Clusters.png'))
 
-# Plot the silhouette coefricints 
+# Plot the silhouette coefficients 
 
 cluster_labels = np.unique(y_predict)
 n_clusters = len(cluster_labels)
