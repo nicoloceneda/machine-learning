@@ -303,6 +303,13 @@
 * Task: clustering
 * Dataset: Synthetic
 
+`44_multilayer_perceptron.py`
+
+* Model: multilayer perceptron
+* Implementation: manual
+* Task: multi-class classification
+* Dataset: MNIST
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn); Sebastian Raschka
