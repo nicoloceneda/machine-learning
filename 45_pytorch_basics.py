@@ -2,6 +2,8 @@
 
 # Import the libraries
 
+import os
+import requests
 import numpy as np
 
 import torch
@@ -25,8 +27,6 @@ np.set_printoptions(precision=3)
 # Seed
 
 torch.manual_seed(1)
-data_loader_generator = torch.Generator(device=device)
-data_loader_generator.manual_seed(1)
 
 
 # %% BASICS
@@ -119,7 +119,7 @@ t3 = torch.stack([t1, t2], axis=0)
 print(t3, '\n')
 
 
-# %% INPUT PIPELINES
+# %% DATASET FROM TENSORS
 
 # Data loader
 
@@ -131,34 +131,65 @@ for i in data_loader:
     print(i)
 print()
 
+print('Data loader with joint dataset')
+t_x = torch.rand([4,3], dtype=torch.float32)
+t_y = torch.arange(4)
+joint_dataset = TensorDataset(t_x, t_y)
+data_loader_joint = DataLoader(joint_dataset)
+
+for i in data_loader_joint:
+    print(f'x: {i[0]}, y: {i[1]}')
+print()
+
+# Batch, shuffle, repeat
+
 print('Data loader with batches')
 t = torch.arange(7, dtype=torch.float32)
 data_loader = DataLoader(t, batch_size=3, drop_last=True)
 
-for i, j in enumerate(data_loader, 1):
-    print(f'Batch {i}: {j}')
+for i, batch in enumerate(data_loader, 1):
+    print(f'Batch {i}: {batch}')
 print()
 
-# Combining tensors into a joint dataset
-
-t_x = torch.rand([4,3], dtype=torch.float32)
-t_y = torch.arange(4)
-dataset = TensorDataset(t_x, t_y)
-
-for i in dataset:
-    print(f'x: {i[0]}, y: {i[1]}')
-print()
-
-# Shuffle, batch, repeat
-
-data_loader = DataLoader(dataset, batch_size=2, shuffle=True, generator=data_loader_generator)
-for i, j in enumerate(data_loader, 1):
-    print(f'Batch {i}: x: {j[0]}, y: {j[1]}')
-print()
+print('Data loader with joint dataset and shuffled batches')
+data_loader_generator = torch.Generator(device=device)
+data_loader_generator.manual_seed(1)
+data_loader = DataLoader(joint_dataset, batch_size=2, shuffle=True, generator=data_loader_generator)
 
 for epoch in range(2):
-    print(f'Epoch {epoch}')
-    for i, j in enumerate(data_loader, 1):
-        print(f'Batch {i}: x: {j[0]}, y: {j[1]}')
+    print(f'Epoch {epoch+1}\n')
+    for i, batch in enumerate(data_loader, 1):
+        print(f'Batch {i}:\n x: {batch[0]}\n y: {batch[1]}\n')
 print()
+
+
+# %% DATASET FROM FILES ON LOCAL STORAGE DISK
+
+# Download the dataset
+
+def download_github_folder(repo, path, dest, ref="main"):
+    api_url = f"https://api.github.com/repos/{repo}/contents/{path}?ref={ref}"
+    items = requests.get(api_url, timeout=30).json()
+    os.makedirs(dest, exist_ok=True)
+
+    for item in items:
+        if item["type"] == "file":
+            data = requests.get(item["download_url"], timeout=30).content
+            with open(os.path.join(dest, item["name"]), "wb") as f:
+                f.write(data)
+        elif item["type"] == "dir":
+            sub_dest = os.path.join(dest, item["name"])
+            download_github_folder(repo, item["path"], sub_dest, ref)
+
+download_github_folder(
+    "rasbt/machine-learning-book",
+    "ch12/cat_dog_images",
+    "datasets/cat_dog",
+)
+
+# Build a dataset from image files stored on local storage disk
+
+
+
+
 # %%
