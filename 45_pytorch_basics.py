@@ -3,11 +3,15 @@
 # Import the libraries
 
 import os
-import requests
+import pathlib
+from PIL import Image
 import numpy as np
+import matplotlib.pyplot as plt
 
 import torch
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import Dataset,DataLoader, TensorDataset
+from utils.data_loaders import donwload_cat_dog_dataset
+import torchvision.transforms as transforms
 
 # Use GPU if available
 
@@ -19,6 +23,14 @@ print('='*20)
 
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 torch.set_default_device(device)
+
+# Image path
+
+script_name = os.path.basename(__file__)
+script_name = os.path.splitext(script_name)[0]
+
+save_dir = os.path.join('images', script_name)
+os.makedirs(save_dir, exist_ok=True)
 
 # Visualisation settings
 
@@ -163,33 +175,82 @@ for epoch in range(2):
 print()
 
 
-# %% DATASET FROM FILES ON LOCAL STORAGE DISK
+# %% BUILD A DATASET FROM FILES ON LOCAL STORAGE DISK
 
 # Download the dataset
 
-def download_github_folder(repo, path, dest, ref="main"):
-    api_url = f"https://api.github.com/repos/{repo}/contents/{path}?ref={ref}"
-    items = requests.get(api_url, timeout=30).json()
-    os.makedirs(dest, exist_ok=True)
+donwload_cat_dog_dataset()
 
-    for item in items:
-        if item["type"] == "file":
-            data = requests.get(item["download_url"], timeout=30).content
-            with open(os.path.join(dest, item["name"]), "wb") as f:
-                f.write(data)
-        elif item["type"] == "dir":
-            sub_dest = os.path.join(dest, item["name"])
-            download_github_folder(repo, item["path"], sub_dest, ref)
+# Create a list of file names and labels
 
-download_github_folder(
-    "rasbt/machine-learning-book",
-    "ch12/cat_dog_images",
-    "datasets/cat_dog",
-)
+imgdir_path = pathlib.Path('datasets/cat_dog')
+file_list = sorted([str(path) for path in imgdir_path.glob('*.jpg')])
+print(file_list)
 
-# Build a dataset from image files stored on local storage disk
+labels = [1 if 'dog' in os.path.basename(file) else 0 for file in file_list]
+print(labels)
+
+# Visualise the raw images
+
+fig = plt.figure(figsize=(10, 5))
+for i, file in enumerate(file_list):
+    img = Image.open(file)
+    print('Image shape:', np.array(img).shape)
+    ax = fig.add_subplot(2, 3, i+1)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.imshow(img)
+    ax.set_title(os.path.basename(file), size=15)
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir, 'cat_dog_raw.png'))
+
+# Create a joint dataset and apply transformation to resize images
+
+class ImageDataset(Dataset):
+
+    def __init__(self, file_list, labels, transform=None):
+    
+        self.file_list = file_list
+        self.labels = labels
+        self.transform = transform
+
+    def __getitem__(self, idx):
+    
+        img = Image.open(self.file_list[idx])
+    
+        if self.transform is not None:
+    
+            img = self.transform(img)
+    
+        label = self.labels[idx]
+    
+        return img, label
+
+    def __len__(self):
+    
+        return len(self.labels)
+
+img_height, img_width = 80, 120
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Resize((img_height, img_width))])
+
+image_dataset = ImageDataset(file_list, labels, transform)
+
+# Visualise the transformed images
+
+fig = plt.figure(figsize=(10, 5))
+for i, file in enumerate(image_dataset):
+    ax = fig.add_subplot(2, 3, i+1)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.imshow(file[0].numpy().transpose((1, 2, 0)))
+    ax.set_title(f'{file[1]}', size=15)
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir, 'cat_dog_transformed.png'))
 
 
+# %% GENERAL
 
+# Show plots
 
-# %%
+plt.show()
+
