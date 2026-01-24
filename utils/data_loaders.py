@@ -28,7 +28,7 @@ def load_imdb_dataset(csv_path='datasets/imdb/extracted/imdb_data.csv'):
 
     if not os.path.exists(csv_path):
 
-        # check that the tarball archive exists
+        # Check that the tarball archive exists
         
         tarball_path = 'datasets/imdb/original/aclImdb_v1.tar.gz'
         
