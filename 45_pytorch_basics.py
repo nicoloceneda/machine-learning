@@ -4,14 +4,16 @@
 
 import os
 import pathlib
+from itertools import islice
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
 import torch
-from torch.utils.data import Dataset,DataLoader, TensorDataset
-from utils.data_loaders import donwload_cat_dog_dataset
+from torch.utils.data import Dataset, DataLoader, TensorDataset
+import torchvision
 import torchvision.transforms as transforms
+from utils.data_loaders import donwload_cat_dog_dataset
 
 # Use GPU if available
 
@@ -193,13 +195,16 @@ print(labels)
 # Visualise the raw images
 
 fig = plt.figure(figsize=(10, 5))
+
 for i, file in enumerate(file_list):
+
     img = Image.open(file)
     print('Image shape:', np.array(img).shape)
     ax = fig.add_subplot(2, 3, i+1)
     ax.set_xticks([]); ax.set_yticks([])
     ax.imshow(img)
     ax.set_title(os.path.basename(file), size=15)
+
 plt.tight_layout()
 plt.savefig(os.path.join(save_dir, 'cat_dog_raw.png'))
 
@@ -239,13 +244,53 @@ image_dataset = ImageDataset(file_list, labels, transform)
 # Visualise the transformed images
 
 fig = plt.figure(figsize=(10, 5))
+
 for i, file in enumerate(image_dataset):
+
     ax = fig.add_subplot(2, 3, i+1)
     ax.set_xticks([]); ax.set_yticks([])
     ax.imshow(file[0].numpy().transpose((1, 2, 0)))
     ax.set_title(f'{file[1]}', size=15)
+
 plt.tight_layout()
 plt.savefig(os.path.join(save_dir, 'cat_dog_transformed.png'))
+
+
+# %% FETCHING DATASETS FROM TORCHVISION
+
+# CalebA dataset
+
+celeba_dataset = torchvision.datasets.CelebA(root="datasets", split='train', target_type='attr', download=False)
+
+# Visualise the images
+
+fig = plt.figure(figsize=(12, 8))
+
+for i, (image, attributes) in islice(enumerate(celeba_dataset), 18):
+
+    ax = fig.add_subplot(3, 6, i+1)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.imshow(image)
+    ax.set_title(f'{attributes[31]}', size=15)
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir, 'celeba_raw.png'))
+
+# Mnist dataset
+
+mnist_dataset = torchvision.datasets.MNIST(root="datasets", train=True, download=False)
+
+# Visualise the images
+
+fig = plt.figure(figsize=(15, 6))
+
+for i, (image, label) in islice(enumerate(mnist_dataset), 10):
+
+    ax = fig.add_subplot(2, 5, i+1)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.imshow(image, cmap='gray_r')
+    ax.set_title(f'{label}', size=15)
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir, 'mnist_raw.png'))
 
 
 # %% GENERAL
