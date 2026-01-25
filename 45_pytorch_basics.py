@@ -10,8 +10,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import torch
-from torch.utils.data import Dataset, DataLoader, TensorDataset
 import torchvision
+from torch.utils.data import Dataset, DataLoader, TensorDataset
 import torchvision.transforms as transforms
 from utils.data_loaders import donwload_cat_dog_dataset
 
