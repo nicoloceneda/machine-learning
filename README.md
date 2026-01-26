@@ -308,7 +308,12 @@
 * Model: multilayer perceptron
 * Implementation: manual
 * Task: multi-class classification
-* Dataset: MNIST
+* Dataset: Mnist
+
+`45_pytorch_basics.py`
+
+* Learning: PyTorch basics
+* Dataset: Cats and Dogs; CelebA; Mnist
 
 **Sources**
 
