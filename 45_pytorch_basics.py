@@ -166,9 +166,9 @@ for i, batch in enumerate(data_loader, 1):
 print()
 
 print('Data loader with joint dataset and shuffled batches')
-ldg = torch.Generator(device=device)
-ldg.manual_seed(1)
-data_loader = DataLoader(joint_dataset, batch_size=2, shuffle=True, generator=ldg)
+dlg = torch.Generator(device=device)
+dlg.manual_seed(1)
+data_loader = DataLoader(joint_dataset, batch_size=2, shuffle=True, generator=dlg)
 
 for epoch in range(2):
     print(f'Epoch {epoch+1}\n')
