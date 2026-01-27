@@ -315,7 +315,7 @@
 * Learning: PyTorch basics
 * Dataset: Cats and Dogs; CelebA; Mnist
 
-`46_linear_regression_uni_sgd_pytorch.py`
+`46_linear_regression_uni_sgd.py`
 
 * Model: linear regression (stochastic gradient descent)
 * Implementation: manual with pytorch
