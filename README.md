@@ -322,6 +322,13 @@
 * Task: univariate regression
 * Dataset: Synthetic
 
+`47_linear_regression_uni_sgd_pt.py`
+
+* Model: linear regression (stochastic gradient descent)
+* Implementation: pytorch
+* Task: univariate regression
+* Dataset: Synthetic
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn); Sebastian Raschka
