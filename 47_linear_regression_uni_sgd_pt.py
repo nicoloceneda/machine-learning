@@ -81,8 +81,7 @@ loss_fun = nn.MSELoss(reduction='mean')
 # Learn from the data
 
 learning_rate = 0.001
-num_epochs = 200
-log_epochs = 10
+num_epochs = 200 
 
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
@@ -96,7 +95,7 @@ for epoch in range(num_epochs):
         optimizer.step()
         optimizer.zero_grad()
 
-    if epoch % log_epochs == 0:
+    if epoch % 10 == 0:
 
         print(f'Epoch {epoch} Loss {loss.item():.4f}')
 
