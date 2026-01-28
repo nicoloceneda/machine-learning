@@ -135,7 +135,7 @@ def compute_mse_and_acc(model, X, y, num_labels, minibatch_size):
 
 # %% MODEL
 
-# Design the multi-layer perceptron
+# Design the multilayer perceptron
 
 class MultilayerPerceptron:
     """
