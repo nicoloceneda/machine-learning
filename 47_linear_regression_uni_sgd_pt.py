@@ -64,10 +64,11 @@ plt.savefig(os.path.join(save_dir, 'Data.png'))
 
 # %% MODEL
 
-# Design the linear regression
+# Initialize a linear regression object
 
 input_size = 1
 output_size = 1
+
 model = nn.Linear(input_size, output_size)
 
 # Loss function
