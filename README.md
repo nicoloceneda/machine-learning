@@ -329,6 +329,13 @@
 * Task: univariate regression
 * Dataset: Synthetic
 
+`48_multilayer_perceptron_pt.py`
+
+* Model: multilayer perceptron
+* Implementation: pytorch
+* Task: multi-class classification
+* Dataset: Iris
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn); Sebastian Raschka
