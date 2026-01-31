@@ -177,7 +177,7 @@ for epoch in range(2):
 print()
 
 
-# %% BUILD A DATASET FROM FILES ON LOCAL STORAGE DISK
+# %% DATASET FROM FILES ON LOCAL STORAGE DISK
 
 # Download the dataset
 
@@ -256,7 +256,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(save_dir, 'cat_dog_transformed.png'))
 
 
-# %% FETCHING DATASETS FROM TORCHVISION
+# %% DATASETS FROM TORCHVISION
 
 # CalebA dataset
 
