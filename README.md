@@ -315,21 +315,25 @@
 * Learning: PyTorch basics
 * Dataset: Cats and Dogs; CelebA; Mnist
 
-`46_linear_regression_uni_sgd.py`
+`46_pytorch_mechanics.py`
+
+* Learning: PyTorch mechanics
+
+`47_linear_regression_uni_sgd.py`
 
 * Model: linear regression (stochastic gradient descent)
 * Implementation: manual with pytorch
 * Task: univariate regression
 * Dataset: Synthetic
 
-`47_linear_regression_uni_sgd_pt.py`
+`48_linear_regression_uni_sgd_pt.py`
 
 * Model: linear regression (stochastic gradient descent)
 * Implementation: pytorch
 * Task: univariate regression
 * Dataset: Synthetic
 
-`48_multilayer_perceptron_pt.py`
+`49_multilayer_perceptron_pt.py`
 
 * Model: multilayer perceptron
 * Implementation: pytorch
