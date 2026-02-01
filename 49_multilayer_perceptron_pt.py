@@ -59,10 +59,10 @@ X_test_std = std_scaler.transform(X_test)
 
 # Convert numpy arrays to torch arrays
 
-y_train = torch.as_tensor(y_train, dtype=torch.int32, device=device)
-y_test = torch.as_tensor(y_test, dtype=torch.int32, device=device)
-X_train_std = torch.as_tensor(X_train_std, dtype=torch.float32, device=device)
-X_test_std = torch.as_tensor(X_test_std, dtype=torch.float32, device=device)
+y_train = torch.tensor(y_train, dtype=torch.int32, device=device)
+y_test = torch.tensor(y_test, dtype=torch.int32, device=device)
+X_train_std = torch.tensor(X_train_std, dtype=torch.float32, device=device)
+X_test_std = torch.tensor(X_test_std, dtype=torch.float32, device=device)
 
 # Create a dataset
 
