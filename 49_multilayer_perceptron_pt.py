@@ -121,7 +121,7 @@ for epoch in range(num_epochs):
 
     for x_batch, y_batch in train_dl:
 
-        pred = model(x_batch)
+        pred = model(x_batch) # (batch, 3)
         loss = loss_fun(pred, y_batch)
         loss.backward()
         optimizer.step()
