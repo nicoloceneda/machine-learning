@@ -340,6 +340,13 @@
 * Task: multi-class classification
 * Dataset: Iris
 
+`50_multilayer_perceptron_pt.py`
+
+* Model: multilayer perceptron
+* Implementation: pytorch
+* Task: binary classification
+* Dataset: Synthetic
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn); Sebastian Raschka
