@@ -51,6 +51,8 @@ y_train = torch.tensor(y[:n_train], dtype=torch.float32)
 X_valid = torch.tensor(X[n_train:, :], dtype=torch.float32)
 y_valid = torch.tensor(y[n_train:], dtype=torch.float32)
 
+# Plot the data in a scatter plot
+
 fig = plt.figure(figsize=(6, 6))
 plt.plot(X[y==0, 0], X[y==0, 1], 'o', alpha=0.75, markersize=10)
 plt.plot(X[y==1, 0], X[y==1, 1], 'o', alpha=0.75, markersize=10)
@@ -61,6 +63,7 @@ plt.savefig(os.path.join(save_dir, 'Data.png'))
 
 # Create a dataset
 
+torch.manual_seed(1)
 batch_size = 2
 train_ds = TensorDataset(X_train, y_train)
 train_dl = DataLoader(train_ds, batch_size=2, shuffle=True) 
@@ -138,7 +141,7 @@ ax[1].set_xlabel('Epoch', size=15)
 ax[1].tick_params(axis='both', which='major', labelsize=15)
 ax[1].grid(zorder=0)
 ax[1].legend(fontsize=12)
-plt.savefig(os.path.join(save_dir, 'Train_valid__loss_acc.png'))
+plt.savefig(os.path.join(save_dir, 'Train_valid_loss_acc_boundary.png'))
 
 
 # %% GENERAL
