@@ -18,7 +18,7 @@ print("MPS built:", torch.backends.mps.is_built())
 print("MPS available:", torch.backends.mps.is_available())
 print('='*20)
 
-device = torch.device("cpu")
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 torch.set_default_device(device)
 
 # Image path
@@ -63,16 +63,16 @@ plt.savefig(os.path.join(save_dir, 'Data.png'))
 
 # Create a dataset
 
-torch.manual_seed(1)
+dlg = torch.Generator(device=device)
+dlg.manual_seed(1)
 batch_size = 2
 train_ds = TensorDataset(X_train, y_train)
-train_dl = DataLoader(train_ds, batch_size=2, shuffle=True) 
+train_dl = DataLoader(train_ds, batch_size=2, shuffle=True, generator=dlg) 
 
 # %% MODEL
 
 # Design a perceptron object
 
-torch.manual_seed(1)
 model = nn.Sequential(
     nn.Linear(2, 4),
     nn.ReLU(),
