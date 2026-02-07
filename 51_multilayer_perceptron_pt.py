@@ -70,6 +70,7 @@ batch_size = 2
 train_ds = TensorDataset(X_train, y_train)
 train_dl = DataLoader(train_ds, batch_size=2, shuffle=True, generator=dlg) 
 
+
 # %% MODEL
 
 # Design the multilayer perceptron
