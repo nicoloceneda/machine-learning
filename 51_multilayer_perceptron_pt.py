@@ -100,7 +100,7 @@ class Model(nn.Module):
     
     def predict(self, x):
 
-        x = torch.tensor(x, dtype=torch.float32, device=device)
+        x = torch.tensor(x, dtype=torch.float32)
         pred = self.forward(x)[:, 0]
 
         return (pred >= 0.5).float().detach().cpu().numpy()
