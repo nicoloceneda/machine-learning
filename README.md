@@ -322,7 +322,7 @@
 `47_linear_regression_uni_sgd.py`
 
 * Model: linear regression (stochastic gradient descent)
-* Implementation: manual with pytorch
+* Implementation: manual/pytorch
 * Task: univariate regression
 * Dataset: Synthetic
 
@@ -335,14 +335,21 @@
 
 `49_multilayer_perceptron_pt.py`
 
-* Model: multilayer perceptron
+* Model: multilayer perceptron (nn.Module)
 * Implementation: pytorch
 * Task: multi-class classification
 * Dataset: Iris
 
 `50_multilayer_perceptron_pt.py`
 
-* Model: multilayer perceptron
+* Model: multilayer perceptron (nn.Sequential)
+* Implementation: pytorch
+* Task: binary classification
+* Dataset: Synthetic
+
+`51_multilayer_perceptron_pt.py`
+
+* Model: multilayer perceptron (nn.Module)
 * Implementation: pytorch
 * Task: binary classification
 * Dataset: Synthetic
