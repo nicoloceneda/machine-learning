@@ -354,6 +354,18 @@
 * Task: binary classification
 * Dataset: Synthetic
 
+`52_multilayer_perceptron_pt.py`
+
+* Model: multilayer perceptron (nn.Module with custom layer)
+* Implementation: pytorch
+* Task: binary classification
+* Dataset: Synthetic
+
+`53_fuel_efficiency.py`
+
+* Application: oredicting fuel efficiency
+* Dataset: Auto MPG
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn); Sebastian Raschka
