@@ -36,7 +36,7 @@ data['Central Air'] = data['Central Air'].map({'N': 0, 'Y': 1})
 
 data = data.dropna(axis=0)
 
-# Extract the class labels
+# Extract the labels
 
 y = data['SalePrice'].values
 

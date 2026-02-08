@@ -39,7 +39,7 @@ data = data.dropna(axis=0)
 
 data = data[data['Gr Liv Area'] < 4_000]
 
-# Extract the class labels
+# Extract the labels
 
 y = data['SalePrice'].values
 
