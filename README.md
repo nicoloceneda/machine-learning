@@ -125,7 +125,7 @@
 * Task: binary (or multi-class) classification
 * Dataset: Wdbc
 
-`18_cross_val_1_sl.py`
+`18_cross_val_sl.py`
 
 * Model: cross-validation (method 1)
 * Implementation: scikit-learn
