@@ -32,6 +32,8 @@ pip install -r requirements.txt
 
 ## Index
 
+### Foundations
+
 `01_perceptron.py`
 
 * Model: perceptron
@@ -109,6 +111,8 @@ pip install -r requirements.txt
 * Task: multi-class classification
 * Dataset: Iris
 
+### Dimensionality Reduction
+
 `12_pca.py`
 
 * Model: principal components analysis
@@ -143,6 +147,8 @@ pip install -r requirements.txt
 * Implementation: scikit-learn
 * Task: dimensionality reduction (unsupervised)
 * Dataset: Digits
+
+### Pipelines, Validation & Hyperparameter Search
 
 `17_pipeline_sl.py`
 
@@ -207,6 +213,8 @@ pip install -r requirements.txt
 * Task: binary (or multi-class) classification
 * Dataset: Wdbc
 
+### Ensemble Methods
+
 `26_majority_vote_classifier.py`
 
 * Model: majority vote classifier
@@ -235,6 +243,8 @@ pip install -r requirements.txt
 * Task: binary classification
 * Dataset: Wine
 
+### NLP & Topic Modeling
+
 `30_sentiment_analysis.py`
 
 * Application: sentiment analysis
@@ -251,6 +261,8 @@ pip install -r requirements.txt
 * Implementation: scikit-learn
 * Task: topic modeling (unsupervised)
 * Dataset: Imdb
+
+### Regression Models
 
 `33_linear_regression_uni_gd.py`
 
@@ -301,6 +313,8 @@ pip install -r requirements.txt
 * Task: univariate regression
 * Dataset: Housing
 
+### Clustering
+
 `40_k_means_clustering_sl.py`
 
 * Model: k-means clustering with k-means++ initialization
@@ -328,6 +342,8 @@ pip install -r requirements.txt
 * Implementation: scikit-learn
 * Task: clustering
 * Dataset: Synthetic
+
+### Neural Networks
 
 `44_multilayer_perceptron.py`
 
@@ -394,4 +410,4 @@ pip install -r requirements.txt
 
 **Sources**
 
-* [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn); Sebastian Raschka
+* [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn), Sebastian Raschka
