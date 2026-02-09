@@ -1,5 +1,7 @@
 # Machine Learning Models
 
+![Status: Active Development and Maintained](https://img.shields.io/badge/status-active%20development%20%26%20maintained-brightgreen)
+
 *Author*: Nicolo Ceneda \
 *Contact*: n.ceneda20@imperial.ac.uk \
 *Website*: [nicoloceneda.github.io](https://nicoloceneda.github.io/) \
