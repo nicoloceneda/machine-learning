@@ -112,6 +112,8 @@ loss_fun = nn.CrossEntropyLoss()
 learning_rate = 0.001
 num_epochs = 100
 
+# Learn from the data
+
 loss_hist = torch.zeros(num_epochs)
 acc_hist = torch.zeros(num_epochs)
 

@@ -77,10 +77,12 @@ loss_fun = nn.MSELoss(reduction='mean')
 
 # %% TRAINING
 
-# Learn from the data
+# Parameters
 
 learning_rate = 0.001
 num_epochs = 200 
+
+# Learn from the data
 
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 

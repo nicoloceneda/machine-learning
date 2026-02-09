@@ -94,6 +94,8 @@ loss_fun = nn.BCELoss()
 learning_rate = 0.015
 num_epochs = 200
 
+# Learn from the data
+
 loss_hist_train = torch.zeros(num_epochs)
 acc_hist_train = torch.zeros(num_epochs)
 loss_hist_valid = torch.zeros(num_epochs)
