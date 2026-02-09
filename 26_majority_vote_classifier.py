@@ -47,7 +47,7 @@ X = data.data[50:, [1, 2]]
 label_encoder = LabelEncoder()
 y = label_encoder.fit_transform(y)
 
-# Split the dataset into train and test subse ts
+# Split the dataset into train and test subsets
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1, stratify=y)
 

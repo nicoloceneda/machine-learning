@@ -57,7 +57,7 @@ for label in classes:
     mean_classes.append(mean_class)
     print(f'Mean vector for class {label}:\n {mean_class}\n')
 
-# Compute the winin class scatter matrix
+# Compute the within class scatter matrix
 
 num_feat = X_train_std.shape[1]
 sw = np.zeros((num_feat, num_feat))
@@ -68,7 +68,7 @@ for label in classes:
 
 print(f'Within-class scatter matrix: {sw.shape[0]}x{sw.shape[1]}') 
 
-# Cmpute the between class scatter matrix
+# Compute the between class scatter matrix
 
 mean_feat = np.mean(X_train_std, axis=0).reshape(num_feat, 1)
 sb = np.zeros((num_feat, num_feat))

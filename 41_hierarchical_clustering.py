@@ -32,7 +32,7 @@ print(df)
 
 # %% MODEL
 
-# Compute the condensated distance matrix
+# Compute the condensed distance matrix
 
 cond_dist = pdist(df, metric='euclidean')
 

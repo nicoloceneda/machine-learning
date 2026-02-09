@@ -363,7 +363,7 @@
 
 `53_fuel_efficiency.py`
 
-* Application: oredicting fuel efficiency
+* Application: predicting fuel efficiency
 * Dataset: Auto MPG
 
 **Sources**

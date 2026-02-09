@@ -48,7 +48,7 @@ for topic_idx, topic in enumerate(lda.components_):
     print(f'Topic {(topic_idx + 1)}:')
     print(' '.join([feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]]))
 
-# Plot three movies from the horror movie categorty
+# Plot three movies from the horror movie category
 
 horror = X_topics[:, 5].argsort()[::-1]
 

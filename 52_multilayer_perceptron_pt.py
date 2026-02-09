@@ -39,7 +39,7 @@ X = np.random.uniform(low=-1, high=1, size=(200, 2))
 y = np.ones(len(X))
 y[X[:, 0] * X[:, 1] < 0] = 0
 
-# Separate the data into train and valididation subsets
+# Separate the data into train and validation subsets
 
 n_train = 100
 X_train = torch.tensor(X[:n_train, :], dtype=torch.float32)
