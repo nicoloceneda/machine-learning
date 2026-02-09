@@ -156,7 +156,9 @@ plt.savefig(os.path.join(save_dir, 'Train_loss_acc.png'))
 
 # Evaluate the model on the test set
 
-y_test_pred = model(X_test_std)
+model.eval()
+with torch.no_grad():
+    y_test_pred = model(X_test_std)
 correct = (torch.argmax(y_test_pred, dim=1) == y_test).float()
 accuracy = correct.mean()
 print(f'Test Acc.: {accuracy:.4f}')
