@@ -26,6 +26,8 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+## Index
+
 `01_perceptron.py`
 
 * Model: perceptron
@@ -107,7 +109,7 @@ pip install -r requirements.txt
 
 * Model: principal components analysis
 * Implementation: manual
-* Task: multi-class classification
+* Task: dimensionality reduction (unsupervised)
 * Dataset: Wine
 
 `13_pca_sl.py`
@@ -135,7 +137,7 @@ pip install -r requirements.txt
 
 * Model: t-distributed stochastic neighbor embedding
 * Implementation: scikit-learn
-* Task: multi-class classification
+* Task: dimensionality reduction (unsupervised)
 * Dataset: Digits
 
 `17_pipeline_sl.py`
@@ -243,7 +245,7 @@ pip install -r requirements.txt
 
 * Model: Latent dirichlet allocation
 * Implementation: scikit-learn
-* Task: multi-class classification
+* Task: topic modeling (unsupervised)
 * Dataset: Imdb
 
 `33_linear_regression_uni_gd.py`
