@@ -6,6 +6,26 @@
 *Institution*: Imperial College London \
 *Course*: PhD in Finance
 
+## Description
+
+This repository is a collection of ready-to-run machine learning and deep learning examples. Each script focuses on a specific model or method, including implementations from scratch, scikit-learn, and PyTorch  workflows.
+
+## Installation
+
+Create and activate a virtual environment:
+
+```bash
+conda create -n envML python=3.12 -y
+conda activate envML
+```
+
+Install dependencies from `requirements.txt`:
+
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
 `01_perceptron.py`
 
 * Model: perceptron
