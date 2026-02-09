@@ -32,6 +32,7 @@ pip install -r requirements.txt
 
 ## Index
 
+Expand the dropdown windows for details.
 
 ### Foundations
 
