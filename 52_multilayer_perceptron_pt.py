@@ -159,6 +159,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 for epoch in range(num_epochs):
 
+    model.train()
     for x_batch, y_batch in train_dl:
 
         pred = model(x_batch, True)[:, 0] # (batch, 1) -> (batch,)
@@ -174,11 +175,13 @@ for epoch in range(num_epochs):
     loss_hist_train[epoch] /= X_train.shape[0]
     acc_hist_train[epoch] /= X_train.shape[0]
 
-    pred = model(X_valid)[:, 0]
-    loss = loss_fun(pred, y_valid)
-    loss_hist_valid[epoch] = loss.item()
-    correct = ((pred >= 0.5).float() == y_valid).float()
-    acc_hist_valid[epoch] += correct.mean()
+    model.eval()
+    with torch.no_grad():
+        pred = model(X_valid)[:, 0]
+        loss = loss_fun(pred, y_valid)
+        loss_hist_valid[epoch] = loss.item()
+        correct = ((pred >= 0.5).float() == y_valid).float()
+        acc_hist_valid[epoch] += correct.mean()
 
 # Plot the training and validation loss and accuracy
 
