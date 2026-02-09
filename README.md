@@ -1,5 +1,7 @@
 # Machine Learning Models
 
+![Project cover](assets/project_cover.png)
+
 ![Status: Active Development and Maintained](https://img.shields.io/badge/status-active%20development%20%26%20maintained-brightgreen)
 
 *Author*: Nicolo Ceneda \
