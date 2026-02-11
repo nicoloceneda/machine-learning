@@ -73,12 +73,16 @@ train_dl = DataLoader(train_ds, batch_size=2, shuffle=True, generator=dlg)
 
 # Design the multilayer perceptron
 
+input_size = X_train.shape[1]
+output_size = 1
+hidden_size = [4, 4]
+
 model = nn.Sequential(
-    nn.Linear(2, 4),
+    nn.Linear(input_size, hidden_size[0]),
     nn.ReLU(),
-    nn.Linear(4, 4),
+    nn.Linear(hidden_size[0], hidden_size[1]),
     nn.ReLU(),
-    nn.Linear(4, 1),
+    nn.Linear(hidden_size[1], output_size),
     nn.Sigmoid()
 )
 

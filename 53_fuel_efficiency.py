@@ -88,12 +88,16 @@ train_dl = DataLoader(train_ds, batch_size=8, shuffle=True, generator=dlg)
 
 # Design the multilayer perceptron
 
+input_size = X_train_std.shape[1]
+output_size = 1
+hidden_size = [8, 4]
+
 model = nn.Sequential(
-    nn.Linear(9, 8),
+    nn.Linear(input_size, hidden_size[0]),
     nn.ReLU(),
-    nn.Linear(8, 4),
+    nn.Linear(hidden_size[0], hidden_size[1]),
     nn.ReLU(),
-    nn.Linear(4, 1)
+    nn.Linear(hidden_size[1], output_size)
 )
 
 # Loss function
