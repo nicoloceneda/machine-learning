@@ -86,6 +86,8 @@ train_dl = DataLoader(train_ds, batch_size=8, shuffle=True, generator=dlg)
 
 # %% MODEL
 
+# Design the multilayer perceptron
+
 model = nn.Sequential(
     nn.Linear(9, 8),
     nn.ReLU(),
