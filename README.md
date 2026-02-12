@@ -683,6 +683,16 @@ Expand the dropdown windows for details.
 
 </details>
 
+<details>
+<summary><code>54_handwritten_digits.py</code></summary>
+
+
+* Application: classifying handwritten digits
+* Dataset: Mnist
+
+
+</details>
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn), Sebastian Raschka
