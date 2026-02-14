@@ -277,7 +277,7 @@ plt.savefig(os.path.join(save_dir, 'celeba_raw.png'))
 
 # Mnist dataset
 
-mnist_dataset = torchvision.datasets.MNIST(root="datasets", train=True, download=False)
+mnist_dataset = torchvision.datasets.MNIST(root="datasets", train=True, download=True)
 
 # Visualise the images
 

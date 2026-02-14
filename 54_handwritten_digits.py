@@ -25,8 +25,8 @@ torch.set_default_device(device)
 # Import the dataset
 
 transform = transforms.Compose([transforms.ToTensor()])
-df_train = torchvision.datasets.MNIST(root='datasets', train=True, transform=transform, download=False)
-df_test = torchvision.datasets.MNIST(root='datasets', train=False, transform=transform, download=False)
+df_train = torchvision.datasets.MNIST(root='datasets', train=True, transform=transform, download=True)
+df_test = torchvision.datasets.MNIST(root='datasets', train=False, transform=transform, download=True)
 
 # Create a dataset
 
