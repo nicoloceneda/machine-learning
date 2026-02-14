@@ -39,8 +39,8 @@ train_dl = DataLoader(df_train, batch_size=64, shuffle=True, generator=dlg)
 
 # Design the multilayer perceptron
 
-image_size = df_train[0][0].shape
-input_size = image_size[0] * image_size[1] * image_size[2]
+image_shape = df_train[0][0].shape
+input_size = image_shape[0] * image_shape[1] * image_shape[2]
 output_size = len(df_train.classes)
 hidden_size = [32, 16]
 
