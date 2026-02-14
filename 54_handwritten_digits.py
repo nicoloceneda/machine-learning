@@ -39,10 +39,10 @@ train_dl = DataLoader(df_train, batch_size=64, shuffle=True, generator=dlg)
 
 # Design the multilayer perceptron
 
-image_shape = df_train[0][0].shape
+image_shape = (1, 28, 28)
 input_size = image_shape[0] * image_shape[1] * image_shape[2]
-output_size = len(df_train.classes)
 hidden_size = [32, 16]
+output_size = 10
 
 model = nn.Sequential(
     nn.Flatten(),
