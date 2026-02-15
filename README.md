@@ -398,20 +398,22 @@ Expand the dropdown windows for details.
 
 
 <details>
-<summary><code>30_sentiment_analysis.py</code></summary>
+<summary><code>30_sentiment_analysis_sl.py</code></summary>
 
 
 * Application: sentiment analysis
+* Implementation: scikit-learn
 * Dataset: Imdb
 
 
 </details>
 
 <details>
-<summary><code>31_sentiment_analysis_oocl.py</code></summary>
+<summary><code>31_sentiment_analysis_oocl_sl.py</code></summary>
 
 
 * Application: sentiment analysis (out-of-core learning)
+* Implementation: scikit-learn
 * Dataset: Imdb
 
 
@@ -674,20 +676,33 @@ Expand the dropdown windows for details.
 </details>
 
 <details>
-<summary><code>53_fuel_efficiency.py</code></summary>
+<summary><code>53_fuel_efficiency_pt.py</code></summary>
 
 
 * Application: predicting fuel efficiency
+* Implementation: pytorch
 * Dataset: Auto MPG
 
 
 </details>
 
 <details>
-<summary><code>54_handwritten_digits.py</code></summary>
+<summary><code>54_handwritten_digits_pt.py</code></summary>
 
 
 * Application: classifying handwritten digits
+* Implementation: pytorch
+* Dataset: Mnist
+
+
+</details>
+
+<details>
+<summary><code>55_handwritten_digits_pl.py</code></summary>
+
+
+* Application: classifying handwritten digits
+* Implementation: pytorch lightning
 * Dataset: Mnist
 
 
