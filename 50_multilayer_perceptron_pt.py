@@ -127,6 +127,7 @@ for epoch in range(num_epochs):
 
     model.eval()
     with torch.no_grad():
+
         pred = model(X_valid)[:, 0]
         loss = loss_fun(pred, y_valid)
         loss_hist_valid[epoch] = loss.item()
