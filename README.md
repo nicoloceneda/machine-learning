@@ -708,6 +708,16 @@ Expand the dropdown windows for details.
 
 </details>
 
+<details>
+<summary><code>56_convolutional_pt.py</code></summary>
+
+* Model: convolutional neural network (nn.Sequential)
+* Implementation: pytorch
+* Task: multi-class classification
+* Dataset: Mnist
+
+</details>
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn), Sebastian Raschka
