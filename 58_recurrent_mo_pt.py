@@ -30,7 +30,7 @@ torch.manual_seed(1)
 df_train = IMDB(split='train')
 df_test = IMDB(split='test')
 
-# Separate the train data into train and validation subsets
+# Separate the data into train, validation and test subsets
 
 df_train, df_valid = random_split(list(df_train), [20_000, 5_000])
 df_test = list(df_test)
@@ -55,24 +55,24 @@ token_counts = Counter()
 
 for label, text in df_train:
 
-    tokens = clean_tokenizer(text)
-    token_counts.update(tokens)
+    token_list = clean_tokenizer(text)
+    token_counts.update(token_list)
 
 print(f'Vocab-size: {len(token_counts)}')
 
 # Encoding each unique token into an integer
 
-sorted_by_freq_tuples = sorted(token_counts.items(), key=lambda x: x[1], reverse=True)
-ordered_dict = OrderedDict(sorted_by_freq_tuples)
-vocab = vocab(ordered_dict)
-vocab.insert_token("<pad>", 0)
-vocab.insert_token("<unk>", 1)
-vocab.set_default_index(1)
+token_counts_sorted_by_freq = sorted(token_counts.items(), key=lambda x: x[1], reverse=True)
+token_counts_sorted_by_freq = OrderedDict(token_counts_sorted_by_freq)
+vocabulary = vocab(token_counts_sorted_by_freq)
+vocabulary.insert_token("<pad>", 0)
+vocabulary.insert_token("<unk>", 1)
+vocabulary.set_default_index(1)
 
 # Functions to remap labels and transform each text into the corresponding integer
 
 label_pipeline = lambda x: 1.0 if x == 2 else 0.0
-text_pipeline = lambda x: [vocab[token] for token in clean_tokenizer(x)]
+text_pipeline = lambda x: [vocabulary[token] for token in clean_tokenizer(x)]
 
 # Wrap the label remapping and text encoding functions
 
@@ -110,8 +110,8 @@ class Model(nn.Module):
 
         super().__init__()
 
-        self.emb  = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
-        self.rnn  = nn.LSTM(embed_dim, rnn_hidden_size, batch_first=True)
+        self.emb = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
+        self.rnn = nn.LSTM(embed_dim, rnn_hidden_size, batch_first=True)
         self.fc1 = nn.Linear(rnn_hidden_size, fc_hidden_size)
         self.fc2 = nn.Linear(fc_hidden_size, 1)
 
@@ -128,6 +128,19 @@ class Model(nn.Module):
 
         return x
 
+# Initialize a recurrent neural network object
+
+vocab_size = len(vocabulary)
+embed_dim = 20
+rnn_hidden_size = 64
+fc_hidden_size = 64
+
+model = Model(vocab_size, embed_dim, rnn_hidden_size, fc_hidden_size) 
+
+# Loss function
+
+loss_fun = nn.BCELoss()
+
 # Function to train the model
 
 def train(dataloader):
@@ -137,13 +150,14 @@ def train(dataloader):
     
     for text_batch, label_batch, lengths in dataloader:
         
-        optimizer.zero_grad()
         pred = model(text_batch, lengths)[:, 0]
-        loss = loss_fn(pred, label_batch)
+        loss = loss_fun(pred, label_batch)
         loss.backward()
         optimizer.step()
+        optimizer.zero_grad()
+
         total_acc += ((pred >= 0.5).float() == label_batch).float().sum().item()
-        total_loss += loss.item()*label_batch.size(0)
+        total_loss += loss.item() * label_batch.size(0)
         
     return total_acc/len(dataloader.dataset), total_loss/len(dataloader.dataset)
 
@@ -159,32 +173,22 @@ def evaluate(dataloader):
         for text_batch, label_batch, lengths in dataloader:
             
             pred = model(text_batch, lengths)[:, 0]
-            loss = loss_fn(pred, label_batch)
+            loss = loss_fun(pred, label_batch)
             total_acc += ((pred>=0.5).float() == label_batch).float().sum().item()
-            total_loss += loss.item()*label_batch.size(0)
+            total_loss += loss.item() * label_batch.size(0)
             
     return total_acc/len(dataloader.dataset), total_loss/len(dataloader.dataset)
-
-# Initialize a recurrent neural network object
-
-vocab_size = len(vocab)
-embed_dim = 20
-rnn_hidden_size = 64
-fc_hidden_size = 64
-
-model = Model(vocab_size, embed_dim, rnn_hidden_size, fc_hidden_size) 
-
-# Loss function
-
-loss_fn = nn.BCELoss()
 
 
 # %% TRAINING
 
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+# Parameters
 
 num_epochs = 10
-torch.manual_seed(1)
+
+# Learn from the data
+
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 for epoch in range(num_epochs):
 
