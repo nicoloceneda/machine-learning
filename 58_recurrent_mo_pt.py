@@ -184,11 +184,12 @@ def evaluate(dataloader):
 
 # Parameters
 
+learning_rate = 0.001
 num_epochs = 10
 
 # Learn from the data
 
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in range(num_epochs):
 

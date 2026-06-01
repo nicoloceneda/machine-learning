@@ -718,6 +718,16 @@ Expand the dropdown windows for details.
 
 </details>
 
+<details>
+<summary><code>58_recurrent_mo_pt.py</code></summary>
+
+* Model: recurrent neural network (nn.Module)
+* Implementation: pytorch
+* Task: many-to-one
+* Dataset: Imdb
+
+</details>
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn), Sebastian Raschka
