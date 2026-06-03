@@ -12,6 +12,10 @@ from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 from torch.distributions.categorical import Categorical
 
+# Seed
+
+torch.manual_seed(1)
+
 
 # %% DATA
 
@@ -68,15 +72,21 @@ seq_length = 40
 chunk_size = seq_length + 1
 text_chunks = [text_encoded[i:i+chunk_size] for i in range(len(text_encoded)-chunk_size+1)]
 
+# Define the sequences of (input, target)
+
 class TextDataset(Dataset):
 
     def __init__(self, text_chunks):
 
         self.text_chunks = text_chunks
 
+    # Tells the DataLoader how many training samples exist
+
     def __len__(self):
 
         return len(self.text_chunks)
+
+    # Returns one (input, target) pair
 
     def __getitem__(self, idx):
 
@@ -85,67 +95,100 @@ class TextDataset(Dataset):
 
 seq_dataset = TextDataset(torch.tensor(text_chunks)) 
 
+# Visualise some example sequences
+
 for i, (seq, target) in enumerate(seq_dataset):
+
     print(' Input (x): ',
           repr(''.join(char_array[seq])))
     print('Target (y): ',
           repr(''.join(char_array[target])))
     print()
+
     if i == 1:
+
         break
 
-batch_size = 64
-torch.manual_seed(1)
+# Create a dataset
+
+batch_size=64
 seq_dl = DataLoader(seq_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 
+
+# %% MODEL
+
+# Design the recurrent neural nework
+
 class RNN(nn.Module):
+
     def __init__(self, vocab_size, embed_dim, rnn_hidden_size):
+    
         super().__init__()
-        self.embedding = nn.Embedding(vocab_size, embed_dim)
-        self.rnn_hidden_size = rnn_hidden_size
-        self.rnn = nn.LSTM(embed_dim, rnn_hidden_size,
-                           batch_first=True)
+        
+        self.emb = nn.Embedding(vocab_size, embed_dim, padding_idx=None)
+        self.rnn = nn.LSTM(embed_dim, rnn_hidden_size, batch_first=True)
         self.fc = nn.Linear(rnn_hidden_size, vocab_size)
 
+        self.rnn_hidden_size = rnn_hidden_size
+
     def forward(self, x, hidden, cell):
-        out = self.embedding(x).unsqueeze(1)
-        out, (hidden, cell) = self.rnn(out, (hidden, cell))
-        out = self.fc(out).reshape(out.size(0), -1)
-        return out, hidden, cell
+
+        x = self.emb(x).unsqueeze(1)
+        x, (hidden, cell) = self.rnn(x, (hidden, cell))
+        x = self.fc(x).reshape(x.size(0), -1)
+        
+        return x, hidden, cell
 
     def init_hidden(self, batch_size):
+        
         hidden = torch.zeros(1, batch_size, self.rnn_hidden_size)
         cell = torch.zeros(1, batch_size, self.rnn_hidden_size)
+
         return hidden, cell
+
+# Initialize a recurrent neural network object
 
 vocab_size = len(char_array)
 embed_dim = 256
 rnn_hidden_size = 512
-torch.manual_seed(1)
+
 model = RNN(vocab_size, embed_dim, rnn_hidden_size)
-model
+
+# Loss function
 
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.005)
+
+
+# %% TRAINING
+
+# Parameters
 
 num_epochs = 10000
-torch.manual_seed(1)
+
+# Learn from the data
+
+optimizer = torch.optim.Adam(model.parameters(), lr=0.005)
 
 for epoch in range(num_epochs):
+
     hidden, cell = model.init_hidden(batch_size)
     seq_batch, target_batch = next(iter(seq_dl))
     optimizer.zero_grad()
     loss = 0
+    
     for c in range(seq_length):
+    
         pred, hidden, cell = model(seq_batch[:, c], hidden, cell)
         loss += loss_fn(pred, target_batch[:, c])
         loss.backward()
         optimizer.step()
         loss = loss.item()/seq_length
+    
         if epoch % 500 == 0:
+    
             print(f'Epoch {epoch} loss: {loss:.4f}') 
 
-torch.manual_seed(1)
+
 logits = torch.tensor([[1.0, 1.0, 1.0]])
 print('Probabilities:', nn.functional.softmax(logits, dim=1).numpy()[0]) 
 
