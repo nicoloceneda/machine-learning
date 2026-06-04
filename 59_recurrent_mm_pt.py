@@ -63,9 +63,6 @@ text_encoded = np.array([char2int[ch] for ch in text], dtype=np.int32)
 print(text[:15], '==> Encoding ==>', text_encoded[:15])
 print(text_encoded[:15], '==> Reverse ==>',''.join(char_array[text_encoded[:15]]))
 
-
-# %%
-
 # Divide the encoded text into chunks of 41 characters
 
 seq_length = 40
@@ -112,7 +109,7 @@ for i, (seq, target) in enumerate(seq_dataset):
 # Create a dataset
 
 batch_size=64
-seq_dl = DataLoader(seq_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
+train_dl = DataLoader(seq_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 
 
 # %% MODEL
@@ -156,7 +153,7 @@ model = RNN(vocab_size, embed_dim, rnn_hidden_size)
 
 # Loss function
 
-loss_fn = nn.CrossEntropyLoss()
+loss_fun = nn.CrossEntropyLoss()
 
 
 # %% TRAINING
@@ -172,51 +169,46 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.005)
 for epoch in range(num_epochs):
 
     hidden, cell = model.init_hidden(batch_size)
-    seq_batch, target_batch = next(iter(seq_dl))
-    optimizer.zero_grad()
+    seq_batch, target_batch = next(iter(train_dl))
     loss = 0
     
     for c in range(seq_length):
     
         pred, hidden, cell = model(seq_batch[:, c], hidden, cell)
-        loss += loss_fn(pred, target_batch[:, c])
-        loss.backward()
-        optimizer.step()
-        loss = loss.item()/seq_length
+        loss += loss_fun(pred, target_batch[:, c])
     
-        if epoch % 500 == 0:
+    loss.backward()
+    optimizer.step()
+    optimizer.zero_grad()
     
-            print(f'Epoch {epoch} loss: {loss:.4f}') 
+    avg_loss = loss.item() / seq_length
+    
+    if epoch % 500 == 0:
+    
+        print(f'Epoch {epoch} loss: {avg_loss:.4f}') 
 
 
-logits = torch.tensor([[1.0, 1.0, 1.0]])
-print('Probabilities:', nn.functional.softmax(logits, dim=1).numpy()[0]) 
+# %% TESTING
 
-m = Categorical(logits=logits)
-samples = m.sample((10,))
-print(samples.numpy()) 
-
-torch.manual_seed(1)
-logits = torch.tensor([[1.0, 1.0, 3.0]])
-print('Probabilities:', nn.functional.softmax(logits, dim=1).numpy()[0])
-
-m = Categorical(logits=logits)
-samples = m.sample((10,))
-print(samples.numpy())
+# Function that receives a string and generates a new one
 
 def sample(model, starting_str, len_generated_text=500, scale_factor=1.0):
 
     encoded_input = torch.tensor([char2int[s] for s in starting_str])
     encoded_input = torch.reshape(encoded_input, (1, -1))
     generated_str = starting_str
+
     model.eval()
     hidden, cell = model.init_hidden(1)
+
     for c in range(len(starting_str)-1):
+
         _, hidden, cell = model(encoded_input[:, c].view(1), hidden, cell)
     
     last_char = encoded_input[:, -1]
     
     for i in range(len_generated_text):
+
         logits, hidden, cell = model(last_char.view(1), hidden, cell)
         logits = torch.squeeze(logits, 0)
         scaled_logits = logits * scale_factor
@@ -226,16 +218,6 @@ def sample(model, starting_str, len_generated_text=500, scale_factor=1.0):
         
     return generated_str
 
-torch.manual_seed(1)
+# Generate some new text
+
 print(sample(model, starting_str='The island')) 
-
-logits = torch.tensor([[1.0, 1.0, 3.0]])
-print('Probabilities before scaling:        ', nn.functional.softmax(logits, dim=1).numpy()[0])
-print('Probabilities after scaling with 0.5:', nn.functional.softmax(0.5*logits, dim=1).numpy()[0])
-print('Probabilities after scaling with 0.1:', nn.functional.softmax(0.1*logits, dim=1).numpy()[0])
-
-torch.manual_seed(1)
-print(sample(model, starting_str='The island', scale_factor=2.0)) 
-
-torch.manual_seed(1)
-print(sample(model, starting_str='The island', scale_factor=0.5))
