@@ -95,9 +95,10 @@ def collate_batch(batch):
 
 # Create a dataset
 
-train_dl = DataLoader(df_train, batch_size=32, shuffle=True, collate_fn=collate_batch)
-valid_dl = DataLoader(df_valid, batch_size=32, shuffle=False, collate_fn=collate_batch)
-test_dl  = DataLoader(df_test,  batch_size=32, shuffle=False, collate_fn=collate_batch)
+batch_size = 32
+train_dl = DataLoader(df_train, batch_size=batch_size, shuffle=True, collate_fn=collate_batch)
+valid_dl = DataLoader(df_valid, batch_size=batch_size, shuffle=False, collate_fn=collate_batch)
+test_dl  = DataLoader(df_test,  batch_size=batch_size, shuffle=False, collate_fn=collate_batch)
 
 
 # %% MODEL
