@@ -728,6 +728,16 @@ Expand the dropdown windows for details.
 
 </details>
 
+<details>
+<summary><code>59_recurrent_mm_pt.py</code></summary>
+
+* Model: recurrent neural network (nn.Module)
+* Implementation: pytorch
+* Task: many-to-many
+* Dataset: Gutenberg
+
+</details>
+
 **Sources**
 
 * [Machine Learning with PyTorch and Scikit-Learn](https://sebastianraschka.com/books/#machine-learning-with-pytorch-and-scikit-learn), Sebastian Raschka
