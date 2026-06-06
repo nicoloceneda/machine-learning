@@ -6,9 +6,10 @@ import re
 import warnings
 from collections import Counter, OrderedDict
 
+import torchtext
 import torch
 import torch.nn as nn
-import torchtext
+from torch.nn.utils.rnn import pack_padded_sequence
 
 torchtext.disable_torchtext_deprecation_warning()
 warnings.filterwarnings('ignore', category=UserWarning, module=r'torchdata\.datapipes')
@@ -119,7 +120,7 @@ class Model(nn.Module):
     def forward(self, text, lengths):
 
         x = self.emb(text)
-        x = nn.utils.rnn.pack_padded_sequence(x, lengths.cpu().numpy(), enforce_sorted=False, batch_first=True)
+        x = pack_padded_sequence(x, lengths.cpu().numpy(), enforce_sorted=False, batch_first=True)
         x, (hidden, cell) = self.rnn(x)
         x = hidden[-1, :, :]
         x = self.fc1(x)
