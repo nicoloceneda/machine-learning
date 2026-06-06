@@ -108,7 +108,7 @@ for i, (seq, target) in enumerate(seq_dataset):
 
 # Create a dataset
 
-batch_size=64
+batch_size = 64
 train_dl = DataLoader(seq_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 
 
