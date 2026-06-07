@@ -119,10 +119,11 @@ class Model(nn.Module):
 
     def forward(self, text, lengths):
 
-        x = self.emb(text)
+        x = self.emb(text) # (batch_size, max_len, embed_dim)
+        # Convert the padded tensor into a packed sequence so the LSTM ignores padding positions
         x = pack_padded_sequence(x, lengths.cpu().numpy(), enforce_sorted=False, batch_first=True)
-        x, (hidden, cell) = self.rnn(x)
-        x = hidden[-1, :, :]
+        x, (h, c) = self.rnn(x)
+        x = h[-1, :, :]
         x = self.fc1(x)
         x = nn.ReLU()(x)
         x = self.fc2(x)
@@ -161,7 +162,7 @@ def train(dataloader):
         total_acc += ((pred >= 0.5).float() == label_batch).float().sum().item()
         total_loss += loss.item() * label_batch.size(0)
         
-    return total_acc/len(dataloader.dataset), total_loss/len(dataloader.dataset)
+    return total_acc / len(dataloader.dataset), total_loss / len(dataloader.dataset)
 
 # Function to evaluate the model
 
@@ -176,10 +177,10 @@ def evaluate(dataloader):
             
             pred = model(text_batch, lengths)[:, 0]
             loss = loss_fun(pred, label_batch)
-            total_acc += ((pred>=0.5).float() == label_batch).float().sum().item()
+            total_acc += ((pred >= 0.5).float() == label_batch).float().sum().item()
             total_loss += loss.item() * label_batch.size(0)
             
-    return total_acc/len(dataloader.dataset), total_loss/len(dataloader.dataset)
+    return total_acc / len(dataloader.dataset), total_loss / len(dataloader.dataset)
 
 
 # %% TRAINING
