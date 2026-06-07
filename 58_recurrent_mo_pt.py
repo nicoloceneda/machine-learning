@@ -122,7 +122,7 @@ class Model(nn.Module):
         x = self.emb(text)      # x: (B,T,E)
         x = pack_padded_sequence(x, lengths.cpu().numpy(), enforce_sorted=False, batch_first=True)
         x, (h, c) = self.rnn(x) # x: h(1), ..., h(T), (B,T,H) | h: h(T), (L,B,H) | c: c(T), (L,B,H)
-        x = h[-1, :, :]
+        x = h[-1, :, :]         # (B,H)
         x = self.fc1(x)
         x = nn.ReLU()(x)
         x = self.fc2(x)
