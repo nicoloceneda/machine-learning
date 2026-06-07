@@ -3,14 +3,14 @@
 # Import the libraries
 
 import numpy as np
-from pathlib import Path
-from urllib.request import urlretrieve
 
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 from torch.distributions.categorical import Categorical
+
+from utils import load_gutenberg
 
 # Seed
 
@@ -19,29 +19,9 @@ torch.manual_seed(1)
 
 # %% DATA
 
-# Download the dataset
+# Load the dataset
 
-data_dir = Path('datasets/gutenberg')
-data_file = data_dir / 'gutenberg.txt'
-download_url = 'https://www.gutenberg.org/files/1268/1268-0.txt'
-
-data_dir.mkdir(parents=True, exist_ok=True)
-
-if not data_file.exists():
-
-    urlretrieve(download_url, data_file)
-
-# Import the dataset
-
-with open(data_file, 'r', encoding='utf8') as fp:
-
-    text = fp.read()
-
-# Remove portfions from beginning and end
-
-start_idx = text.find('THE MYSTERIOUS ISLAND')
-end_idx = text.find('End of the Project Gutenberg')
-text = text[start_idx:end_idx]
+text = load_gutenberg()
 print('Total Length:', len(text))
 
 

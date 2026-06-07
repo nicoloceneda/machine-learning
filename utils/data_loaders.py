@@ -2,6 +2,8 @@
 
 import os
 import tarfile
+from urllib.request import urlretrieve
+
 import pyprind
 import numpy as np
 import pandas as pd
@@ -100,6 +102,51 @@ def load_imdb_dataset(csv_path='datasets/imdb/extracted/imdb_data.csv'):
     
     return df
 
+# Function to download or load the gutenberg dataset
+
+def load_gutenberg(text_path='datasets/gutenberg/gutenberg.txt'):
+    """
+    Loads the Gutenberg text file. If the file does not exist, it downloads it
+    first, then removes the Project Gutenberg header and footer.
+
+    Parameters:
+    ----------
+    text_path : str
+        The path to the downloaded text file.
+
+    Returns:
+    ----------
+    text : str
+        The loaded and cleaned Gutenberg text.
+    """
+
+    if not os.path.exists(text_path):
+
+        download_url = 'https://www.gutenberg.org/files/1268/1268-0.txt'
+
+        os.makedirs(os.path.dirname(text_path), exist_ok=True)
+        urlretrieve(download_url, text_path)
+
+    else:
+
+        print(f'Loading dataset from {text_path}...')
+
+    with open(text_path, 'r', encoding='utf-8') as infile:
+
+        text = infile.read()
+
+    start_idx = text.find('THE MYSTERIOUS ISLAND')
+    end_idx = text.find('End of the Project Gutenberg')
+
+    if start_idx == -1 or end_idx == -1:
+
+        raise ValueError('Could not find the Gutenberg start or end marker.')
+
+    text = text[start_idx:end_idx]
+
+    return text
+
+# Function to the cat and dogs dataset
 
 def donwload_cat_dog_dataset(
     dest_dir='datasets/cat_dog',
