@@ -113,16 +113,15 @@ class Model(nn.Module):
         super().__init__()
 
         self.emb = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
-        self.rnn = nn.LSTM(embed_dim, rnn_hidden_size, batch_first=True)
+        self.rnn = nn.LSTM(embed_dim, rnn_hidden_size, num_layers=1, batch_first=True)
         self.fc1 = nn.Linear(rnn_hidden_size, fc_hidden_size)
         self.fc2 = nn.Linear(fc_hidden_size, 1)
 
     def forward(self, text, lengths):
 
-        x = self.emb(text) # (batch_size, max_len, embed_dim)
-        # Convert the padded tensor into a packed sequence so the LSTM ignores padding positions
+        x = self.emb(text)      # x: (B,T,E)
         x = pack_padded_sequence(x, lengths.cpu().numpy(), enforce_sorted=False, batch_first=True)
-        x, (h, c) = self.rnn(x)
+        x, (h, c) = self.rnn(x) # x: h(1), ..., h(T), (B,T,H) | h: h(T), (L,B,H) | c: c(T), (L,B,H)
         x = h[-1, :, :]
         x = self.fc1(x)
         x = nn.ReLU()(x)
@@ -153,16 +152,16 @@ def train(dataloader):
     
     for text_batch, label_batch, lengths in dataloader:
         
-        pred = model(text_batch, lengths)[:, 0]
+        pred = model(text_batch, lengths)[:, 0] # text_batch: (B,T); (B, 1) -> (B,)
         loss = loss_fun(pred, label_batch)
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
 
-        total_acc += ((pred >= 0.5).float() == label_batch).float().sum().item()
         total_loss += loss.item() * label_batch.size(0)
+        total_acc += ((pred >= 0.5).float() == label_batch).float().sum().item()
         
-    return total_acc / len(dataloader.dataset), total_loss / len(dataloader.dataset)
+    return total_loss / len(dataloader.dataset), total_acc / len(dataloader.dataset)
 
 # Function to evaluate the model
 
@@ -177,10 +176,10 @@ def evaluate(dataloader):
             
             pred = model(text_batch, lengths)[:, 0]
             loss = loss_fun(pred, label_batch)
-            total_acc += ((pred >= 0.5).float() == label_batch).float().sum().item()
             total_loss += loss.item() * label_batch.size(0)
+            total_acc += ((pred >= 0.5).float() == label_batch).float().sum().item()
             
-    return total_acc / len(dataloader.dataset), total_loss / len(dataloader.dataset)
+    return total_loss / len(dataloader.dataset), total_acc / len(dataloader.dataset)
 
 
 # %% TRAINING
@@ -196,8 +195,8 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in range(num_epochs):
 
-    acc_train, loss_train = train(train_dl)
-    acc_valid, loss_valid = evaluate(valid_dl)
+    loss_train, acc_train = train(train_dl)
+    loss_valid, acc_valid = evaluate(valid_dl)
     print(f'Epoch {epoch} accuracy: {acc_train:.4f} val_accuracy: {acc_valid:.4f}') 
 
 
@@ -205,5 +204,5 @@ for epoch in range(num_epochs):
 
 # Evaluate the model on the test set
 
-acc_test, _ = evaluate(test_dl)
+_, acc_test = evaluate(test_dl)
 print(f'test_accuracy: {acc_test:.4f}') 
