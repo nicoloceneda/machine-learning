@@ -137,11 +137,6 @@ def load_gutenberg(text_path='datasets/gutenberg/gutenberg.txt'):
 
     start_idx = text.find('THE MYSTERIOUS ISLAND')
     end_idx = text.find('End of the Project Gutenberg')
-
-    if start_idx == -1 or end_idx == -1:
-
-        raise ValueError('Could not find the Gutenberg start or end marker.')
-
     text = text[start_idx:end_idx]
 
     return text
