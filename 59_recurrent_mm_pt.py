@@ -30,7 +30,6 @@ print('Total Length:', len(text))
 # Extract the set of unique characters
 
 char_set = set(text)
-
 print('Unique Characters:', len(char_set))
 
 # Dictionary to map characters to integers and array to map integers to characters
@@ -38,6 +37,8 @@ print('Unique Characters:', len(char_set))
 char_set_sorted = sorted(char_set)
 char2int = {ch:i for i, ch in enumerate(char_set_sorted)}
 char_array = np.array(char_set_sorted)
+
+# Encode the text
 
 text_encoded = np.array([char2int[ch] for ch in text], dtype=np.int32)
 print(text[:15], '==> Encoding ==>', text_encoded[:15])
@@ -47,7 +48,7 @@ print(text_encoded[:15], '==> Reverse ==>',''.join(char_array[text_encoded[:15]]
 
 seq_length = 40
 chunk_size = seq_length + 1
-text_chunks = [text_encoded[i:i+chunk_size] for i in range(len(text_encoded)-chunk_size+1)]
+text_chunks = np.array([[text_encoded[i:i+chunk_size] for i in range(len(text_encoded)-chunk_size+1)]])
 
 # Define the sequences of (input, target)
 
@@ -103,16 +104,16 @@ class RNN(nn.Module):
         super().__init__()
         
         self.emb = nn.Embedding(vocab_size, embed_dim, padding_idx=None)
-        self.rnn = nn.LSTM(embed_dim, rnn_hidden_size, batch_first=True)
+        self.rnn = nn.LSTM(embed_dim, rnn_hidden_size, num_layers=1, batch_first=True)
         self.fc = nn.Linear(rnn_hidden_size, vocab_size)
 
         self.rnn_hidden_size = rnn_hidden_size
 
     def forward(self, x, hidden, cell):
 
-        x = self.emb(x).unsqueeze(1)
-        x, (hidden, cell) = self.rnn(x, (hidden, cell))
-        x = self.fc(x).reshape(x.size(0), -1)
+        x = self.emb(x).unsqueeze(1)                    # (B,1,E)
+        x, (hidden, cell) = self.rnn(x, (hidden, cell)) # x: h(t), (B,1,H) | h: h(t), (L,B,H) | c: c(t), (L,B,H)
+        x = self.fc(x).reshape(x.size(0), -1)           # (B,vocab_size)
         
         return x, hidden, cell
 
@@ -140,11 +141,12 @@ loss_fun = nn.CrossEntropyLoss()
 
 # Parameters
 
+learning_rate = 0.005
 num_epochs = 10000
 
 # Learn from the data
 
-optimizer = torch.optim.Adam(model.parameters(), lr=0.005)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in range(num_epochs):
 
@@ -154,7 +156,7 @@ for epoch in range(num_epochs):
     
     for c in range(seq_length):
     
-        pred, hidden, cell = model(seq_batch[:, c], hidden, cell)
+        pred, hidden, cell = model(seq_batch[:, c], hidden, cell) # seq_batch[:, c]: (B,)
         loss += loss_fun(pred, target_batch[:, c])
     
     loss.backward()
@@ -174,20 +176,30 @@ for epoch in range(num_epochs):
 
 def sample(model, starting_str, len_generated_text=500, scale_factor=1.0):
 
+    # Encode the starting string
+
     encoded_input = torch.tensor([char2int[s] for s in starting_str])
-    encoded_input = torch.reshape(encoded_input, (1, -1))
+    encoded_input = torch.reshape(encoded_input, (1, -1)) # (1, len_starting_str)
     generated_str = starting_str
+
+    # Start generation from zero LSTM memory for a single sequence
 
     model.eval()
     hidden, cell = model.init_hidden(1)
 
+    # Read the prompt except for the last character to condition the LSTM memory
+
     for c in range(len(starting_str)-1):
 
-        _, hidden, cell = model(encoded_input[:, c].view(1), hidden, cell)
+        _, hidden, cell = model(encoded_input[:, c].view(1), hidden, cell) # encoded_input[:, c].view(1): (1,)
     
+    # Use the final prompt character as the first input for autoregressive generation
+
     last_char = encoded_input[:, -1]
     
     for i in range(len_generated_text):
+
+        # Predict a distribution for the next character, sample it, and feed it back
 
         logits, hidden, cell = model(last_char.view(1), hidden, cell)
         logits = torch.squeeze(logits, 0)
